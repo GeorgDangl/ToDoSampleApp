@@ -1,0 +1,38 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Things I want to do</h4>
+    </div>
+    <div class="panel-body">
+        <div *ngFor="let item of toDoItems">
+           <div class="input-group" [class.finishedGroup]="item.isCompleted && item.id !== itemToEditId">
+                <span class="input-group-addon">
+                    <input type="checkbox" [(ngModel)]="item.isCompleted" (click)="switchItemStatus(item)">
+                </span>
+                <input type="text" class="form-control" [class.finishedItem]="item.isCompleted" [(ngModel)]="item.title" disabled *ngIf="item.id !== itemToEditId">
+                <input type="text" class="form-control" [(ngModel)]="editedTitle" *ngIf="item.id === itemToEditId">
+                <span class="input-group-btn" *ngIf="item.id !== itemToEditId">
+                    <button class="btn btn-default" type="button" (click)="prepareItemForEditing(item)">Edit</button>
+                    <button class="btn btn-danger" type="button" (click)="deleteItem(item)">Delete</button>
+                </span>
+                <span class="input-group-btn" *ngIf="item.id === itemToEditId">
+                    <button class="btn btn-success" type="button" (click)="saveEditedItem()">Save</button>
+                    <button class="btn btn-warning" type="button" (click)="itemToEditId = null">Cancel</button>
+                </span>
+            </div>
+        </div>
+        <form (submit)="addNewItem()">
+            <div class="input-group">
+                <input type="text" placeholder="Add New Item" [(ngModel)]="newItemTitle" required name="newItemTitleFormControl" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" [disabled]="!newItemTitle || newItemSaveInProgress">Save</button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer">
+        <span>{{finishedItems}} of {{toDoItems.length}} completed!</span>
+        <div>
+            <button class="btn btn-default" (click)="resetItems()">Reset Items</button>
+        </div>
+    </div>
+</div>

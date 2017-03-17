@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angular Quickstart</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Polyfills -->
+    <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.4.1/jasmine.css">
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.4.1/jasmine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.4.1/jasmine-html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.4.1/boot.js"></script>
+
+    <script src="https://unpkg.com/zone.js@0.7.4?main=browser"></script>
+    
+    <!-- zone.js requirements for async testing with jasmine -->
+    <script src="https://unpkg.com/zone.js@0.7.4/dist/async-test.js"></script>
+    <script src="https://unpkg.com/zone.js@0.7.4/dist/fake-async-test.js"></script>
+    <script src="https://unpkg.com/zone.js@0.7.4/dist/sync-test"></script>
+    <script src="https://unpkg.com/zone.js@0.7.4/dist/proxy.js"></script>
+    <script src="https://unpkg.com/zone.js@0.7.4/dist/jasmine-patch.js"></script>
+    
+    <script src="https://unpkg.com/systemjs@0.19.40/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('/app/guid-generator.service.spec')
+      .then(window.onload) // Jasmine hooks to the window's onload event
+      .catch(function(err){ console.error(err); });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
