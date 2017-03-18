@@ -38,19 +38,19 @@ export class ToDoListComponent implements OnInit {
         this.finishedItems = this.toDoItems.filter(i => i.isCompleted).length;
     }
 
-    async addNewItem(){
+    addNewItem(){
         this.newItemSaveInProgress = true;
         var newItem = new ToDoItem();
         newItem.title = this.newItemTitle;
-        await this.toDoRepositoryService.saveItem(newItem);
+        this.toDoRepositoryService.saveItem(newItem);
         this.newItemSaveInProgress = false;
         this.newItemTitle = null;
         this.refreshItems();
     }
 
-    async switchItemStatus(item: ToDoItem) {
+    switchItemStatus(item: ToDoItem) {
         item.isCompleted = !item.isCompleted;
-        await this.toDoRepositoryService.saveItem(item);
+        this.toDoRepositoryService.saveItem(item);
         this.recalculateFinishedStatus();
     }
 
@@ -59,10 +59,10 @@ export class ToDoListComponent implements OnInit {
         this.editedTitle = item.title;
     }
 
-    async saveEditedItem(){
+    saveEditedItem(){
         var selectedItem = this.toDoItems.find(i => i.id === this.itemToEditId);
         selectedItem.title = this.editedTitle;
-        await this.toDoRepositoryService.saveItem(selectedItem);
+        this.toDoRepositoryService.saveItem(selectedItem);
         this.refreshItems();
         this.itemToEditId = null;
     }
@@ -72,8 +72,8 @@ export class ToDoListComponent implements OnInit {
         this.refreshItems();
     }
 
-    async resetItems(){
-        await this.toDoRepositoryService.resetAllItems();
+    resetItems(){
+        this.toDoRepositoryService.resetAllItems();
         this.itemToEditId = null;
         this.refreshItems();
     }

@@ -9,7 +9,8 @@ export class GuidGeneratorService {
 
   constructor(private http: Http) { }
 
-  public async createGuid(): Promise<string> {
+  /** Falls back to a pseudo random Guid if the webservice call fails */
+  public async generateGuidFromWebservice(): Promise<string> {
     var guidGeneratorResponse = await this.http
       .get(this.guidGeneratorApi)
       .toPromise()
@@ -19,11 +20,12 @@ export class GuidGeneratorService {
           // The guid from the webservice is wrapped in curly braces
           return responseBody.substr(1, 36);
         }
+        return null;
       }, () => {return null;}).catch(() => {return null;});
-    if (guidGeneratorResponse){
-      return guidGeneratorResponse;
+    if (!guidGeneratorResponse){
+      return this.generatePseudoRandomGuid();
     }
-    return this.generatePseudoRandomGuid();
+    return guidGeneratorResponse;
   }
 
   /**
@@ -31,7 +33,7 @@ export class GuidGeneratorService {
    * (modified)
    * Generates a Version 4 (= Pseudorandom) Guid
    */
-  private generatePseudoRandomGuid(): string {
+  public generatePseudoRandomGuid(): string {
     var newGuidPlaceholder = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
     var pseudoGuid = newGuidPlaceholder.replace(/[xy]/g, letter => this.generateRandomHexDigit(letter))
     return pseudoGuid;

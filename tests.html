@@ -26,11 +26,12 @@
     <script src="https://unpkg.com/systemjs@0.19.40/dist/system.src.js"></script>
     <script src="systemjs.config.js"></script>
     <script>
-      System.import('/app/guid-generator.service.spec')
+      System.import('app/guid-generator.service.spec')
       .then(window.onload) // Jasmine hooks to the window's onload event
       .catch(function(err){ console.error(err); });
     </script>
   </head>
   <body>
+    <a href="index.html">Back to App</a>
   </body>
 </html>

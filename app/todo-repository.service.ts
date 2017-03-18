@@ -21,9 +21,9 @@ export class ToDoRepositoryService {
         }
     }
 
-    public async saveItem(item: ToDoItem){
+    public saveItem(item: ToDoItem){
         if (!item.id) {
-            var newGuid = await this.guidGeneratorService.createGuid();
+            var newGuid = this.guidGeneratorService.generatePseudoRandomGuid();
             item.id = newGuid;
             this.addIdToStorageIndex(item.id);
         }
@@ -60,14 +60,11 @@ export class ToDoRepositoryService {
         return result;
     }
 
-    public async resetAllItems() {
+    public resetAllItems() {
         var allItems = this.getAllItems();
         allItems.forEach(item => this.deleteItem(item));
         var newItems = this.getInitialItems();
-        var itemsSaveTasks = newItems.map(i => {
-            return this.saveItem(i);
-        });
-        await Promise.all(itemsSaveTasks);
+        newItems.forEach(i => this.saveItem(i));
     }
 
     private getStoredItemsIndex(): string[]{

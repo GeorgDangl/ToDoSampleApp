@@ -73,7 +73,7 @@ describe('GuidGeneratorService', () => {
             let options = new ResponseOptions({ status: 200, body: '{' + properGuid + '}'});
             var response = new Response(options);
             backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-            await service.createGuid()
+            await service.generateGuidFromWebservice()
                 .then(guid => {
                     expect(guid).toBe(properGuid);
                 });
@@ -83,7 +83,7 @@ describe('GuidGeneratorService', () => {
             let options = new ResponseOptions({ status: 404 });
             var response = new Response(options);
             backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-            await service.createGuid()
+            await service.generateGuidFromWebservice()
                 .then(guid => {
                     expect(guid).not.toBe(properGuid);
                     var resultIsGuid = stringIsGuid(guid);
@@ -95,13 +95,26 @@ describe('GuidGeneratorService', () => {
             let options = new ResponseOptions({ status: 200, body: invalidGuid });
             var response = new Response(options);
             backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-            await service.createGuid()
-                .then(guid => {
-                    expect(guid).not.toBe(properGuid);
-                    var resultIsGuid = stringIsGuid(guid);
-                    expect(resultIsGuid).toBeTruthy();
-                });
+            var guid = await service.generateGuidFromWebservice();
+            expect(guid).not.toBe(properGuid);
+            var resultIsGuid = stringIsGuid(guid);
+            expect(resultIsGuid).toBeTruthy();
         }));
+
+        it('provides a pseudo random Guid without calling the webservice', () => {
+            let options = new ResponseOptions({ status: 200, body: properGuid });
+            var response = new Response(options);
+            var hasCalledWebservice = false;
+            backend.connections.subscribe((c: MockConnection) => {
+                hasCalledWebservice = true;
+                c.mockRespond(response);
+            });
+            var guid = service.generatePseudoRandomGuid();
+            expect(hasCalledWebservice).toBeFalsy();
+            expect(guid).not.toBe(properGuid);
+            var resultIsGuid = stringIsGuid(guid);
+            expect(resultIsGuid).toBeTruthy();
+        });
 
     })
 });
