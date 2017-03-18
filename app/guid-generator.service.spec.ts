@@ -50,7 +50,7 @@ describe('GuidGeneratorService', () => {
             expect(backend).not.toBeNull('backend should be provided');
         }));
 
-    describe('provides a guid', () => {
+    describe('provides a Guid', () => {
 
         const properGuid = '83c6c27e-0b49-11e7-93ae-92361f002671';
         const invalidGuid = 'I\'m a cookie';
